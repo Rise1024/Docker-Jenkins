@@ -11,27 +11,61 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.7</version>
+        <version>2.6.6</version>
         <relativePath/>
     </parent>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dockerfile-version>1.4.13</dockerfile-version>
+        <docker.image.prefix>DS</docker.image.prefix>
+        <docker.project.build.finalName>docker-jenkins</docker.project.build.finalName>
+        <registry.host>http://127.0.0.1:5000</registry.host>
+        <registry.username>root</registry.username>
+        <registry.password>root</registry.password>
+        <buildVersion>1.0</buildVersion>
+        <registry.host.name>127.0.0.1:5000</registry.host.name>
+        <!--        <registry.host.name>127.0.0.1:5000</registry.host.name>-->
     </properties>
+
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.10</version>
-            <optional>true</optional>
-        </dependency>
     </dependencies>
+
+    <build>
+        <!-- 指定package生成的文件名-->
+        <finalName>docker-jenkins</finalName>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.43.4</version>
+                <configuration>
+                    <dockerHost>unix:///Users/mac_1/.docker/run/docker.sock</dockerHost>
+                    <registry>${registry.host}</registry>
+                    <authConfig>
+                        <username>${registry.username}</username>
+                        <password>${registry.password}</password>
+                    </authConfig>
+                    <images>
+                        <image>
+                            <name>${registry.host.name}/${docker.project.build.finalName}:${buildVersion}</name>
+                            <registry>${registry.host}</registry>
+                            <build>
+                                <dockerFile>${project.basedir}/Dockerfile</dockerFile>
+                            </build>
+                        </image>
+                    </images>
+
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
 
 </project>
