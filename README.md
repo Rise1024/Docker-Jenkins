@@ -1,15 +1,7 @@
 
 
-基于Jenkins，docker实现自动化部署
-![img.png](img.png)
-1、开发人员在gitLab上打了一个tag
-2、gitLab把tag事件推送到Jenkins
-3、Jenkins 获取tag源码，编译，打包，构建镜像
-4、Jenkins push 镜像到阿里云仓库
-5、Jenkins 执行远程脚本
-5-1. 远程服务器 pull 指定镜像
-5-2. 停止老版本容器，启动新版本容器
-#### 本文主要介绍使用docker maven插件制作springboot镜像
+
+### 使用docker maven插件制作springboot镜像
 
 
 ***因为使用M1电脑中间遇到了很多问题,下面会记录遇到的问题***
@@ -90,6 +82,28 @@ docker pull (推镜像到私有仓库)<br>
 ```
 docker run -d  -p 5000:5000 -v /Users/mac_1/data/docker/registry:/var/lib/registry  registry
 ```
+
+###  Jenkins + Docker + Github 实现自动化部署 Maven 项目
+
+![img_1.png](img_1.png)
+
+#### 安装Jenkins
+
+##### 1、docker安装jenkins
+
+```
+docker run --hostname=b50b06a2b5c3 --user=root --mac-address=02:42:ac:11:00:02 --env=LANG=C.UTF-8 --env=JENKINS_HOME=/var/jenkins_home --env=JENKINS_SLAVE_AGENT_PORT=50000 --env=PATH=/opt/java/openjdk/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin --env=JENKINS_VERSION=2.435 --env=JENKINS_UC=https://updates.jenkins.io --env=JENKINS_INCREMENTALS_REPO_MIRROR=https://repo.jenkins-ci.org/incrementals --env=REF=/usr/share/jenkins/ref --env=COPY_REFERENCE_FILE_LOG=/var/jenkins_home/copy_reference_file.log --env=JENKINS_UC_EXPERIMENTAL=https://updates.jenkins.io/experimental --env=JAVA_HOME=/opt/java/openjdk --volume=/Users/mac_1/data/docker/jenkins/home:/var/jenkins_home --volume=/run/host-services/docker.proxy.sock:/var/run/docker.sock --volume=/Users/mac_1/data/docker/jenkins/software:/var/software --volume=/var/jenkins_home --privileged -p 9091:50000 -p 9090:8080 --restart=always --label='org.opencontainers.image.description=The Jenkins Continuous Integration and Delivery server' --label='org.opencontainers.image.licenses=MIT' --label='org.opencontainers.image.revision=5ef64f1eb4b16ba4640d8a4bedca7ac660aec41a' --label='org.opencontainers.image.source=https://github.com/jenkinsci/docker' --label='org.opencontainers.image.title=Official Jenkins Docker image' --label='org.opencontainers.image.url=https://www.jenkins.io/' --label='org.opencontainers.image.vendor=Jenkins project' --label='org.opencontainers.image.version=2.435' --runtime=runc -t -d jenkins/jenkins:jdk11
+```
+***上面需要注意的点*** <br>
+1、挂载jenkins目录 --volume=/Users/mac_1/data/docker/jenkins/home:/var/jenkins_home  --volume=/Users/mac_1/data/docker/jenkins/software:/var/software <br>
+2、挂载docker目录(容器内连接宿主机docker server)   --volume=/run/host-services/docker.proxy.sock:/var/run/docker.sock <br>
+
+##### 2、配置jenkins
+参考文档: https://juejin.cn/post/7127302949797101604#heading-8 <br>
+参考文档: https://segmentfault.com/a/1190000014325300 <br>
+
+
+
 
 docker-registry参考文档:https://yeasy.gitbook.io/docker_practice/repository/registry <br>
 docker fabric8 maven插件参考文档: https://blog.lonelyman.site/archives/35 <br>
