@@ -102,9 +102,6 @@ docker run --hostname=b50b06a2b5c3 --user=root --mac-address=02:42:ac:11:00:02 -
 参考文档: https://juejin.cn/post/7127302949797101604#heading-8 <br>
 参考文档: https://segmentfault.com/a/1190000014325300 <br>
 
-
-
-
 docker-registry参考文档:https://yeasy.gitbook.io/docker_practice/repository/registry <br>
 docker fabric8 maven插件参考文档: https://blog.lonelyman.site/archives/35 <br>
 fabric8官方文档:https://dmp.fabric8.io/ <br>
@@ -112,3 +109,4 @@ docker官方文档:https://docs.docker.com/guides/get-started/ <br>
 dockerFile :https://docs.docker.com/engine/reference/builder/
 
 在Ubuntu下安装Docker :https://cloud.tencent.com/developer/article/2272374?areaSource=102001.17&traceId=mFf1Of3PXZ2grIe5C4mcu
+
