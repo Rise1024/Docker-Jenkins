@@ -85,7 +85,7 @@ docker run -d  -p 5000:5000 -v /Users/mac_1/data/docker/registry:/var/lib/regist
 
 ###  Jenkins + Docker + Github 实现自动化部署 Maven 项目
 
-![img_1.png](http://tva1.sinaimg.cn/large/007VdZ0Wly1hl7cqavqm2j30wn0b879i.jpg)
+![img_1.png](https://tc.bian666.cf/file/3953fefe7aa9b98348ce1.png)
 #### 安装Jenkins
 
 ##### 1、docker安装jenkins
