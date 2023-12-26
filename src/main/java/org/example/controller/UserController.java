@@ -12,5 +12,6 @@ public class UserController {
 	@GetMapping("/jenkins")
 	public String hello() {
 		return "hello jenkins";
+
 	}
 }
