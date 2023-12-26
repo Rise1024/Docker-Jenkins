@@ -103,10 +103,126 @@ apt-get update
 apt-get install -y docker.io
 ```
 
-
-##### 2、配置jenkins
+##### 3、配置jenkins和 gitHub
 参考文档: https://juejin.cn/post/7127302949797101604#heading-8 <br>
-参考文档: https://segmentfault.com/a/1190000014325300 <br>
+
+##### 4、视频文档
+
+```
+jenkins
+现在很多公司,都不需要专业的运维来进行项目部署,
+都使用了自动化部署流程,
+开发完代码,直接就可以低成本部署
+今天来给大家介绍并操作一下常规的自动化部署流程
+比如这里是一个springboot项目
+我随便修改一下代码
+提交推送到github
+进入jenkins就看到一个构建任务正在执行
+完成后我们就看到项目的容器已经运行起来了
+先用一张图简单说一下自动化部署的流程
+我们一般将项目代码推送托管平台
+在gitlab或者github平台设置钩子
+通知另一个重要组件jenkins
+jenkins可以自动化完成软件的持续构建和测试
+通知jenkins后,jenkins拉去项目代码
+安装构建项目所需要的环境
+构建成功后,把项目包通过ssh远程连接工具推送到各个服务器,运行测试
+整个过程疏通明白后
+我们来实践一下
+首先来安装一下jenkins
+整个演示流程,选择在docker中进行
+为了节省时间,就不再编写启动命令了
+直接复制之前的启动命令
+我这里之前已经部署过jenkins容器,这里我先把它给删除了
+这是一个比较简单docker容器启动命令
+映射的端口是9090
+因为我本地已经有镜像了所以这里启动比较快
+使用docker ps发现容器已经启动起来了
+然后在浏览器输入服务地址
+刚启动第一次反应会比较慢
+这里需要密码才能进入
+这需要进入容器才能查看这个密码
+进入容器后在这个地址下找到密码
+在这里需要安装插件
+可以先按照建议的插件安装
+创建自己的管理员账号密码
+从流程图上知道我们需要jenkins去托管平台Github上拉取代码
+为让两个机器之间使用ssh不需要用户名和密码。
+采用了数字签名RSA来完成这个操作
+这里使用ssh-keygen工具来生成密钥和公钥
+复制公钥在github上添加认证key
+完成后,我们可以测试一下
+发现可以成功拉去代码
+然后就是配置项目的构建环境
+一个springboot项目构建需要maven和jdk
+在jenkins管理这里进入插件管理
+下载需要的插件maven
+我下载的jenkins镜像有自带的jdk
+就不需要额外下载了
+然后设置tools
+使用默认的maven settings文件
+jdk就不需要配置了
+选择自己去安装maven
+版本是默认的3.9.6
+
+下面就是配置GitHub
+提交代码时触发Jenkins自动构建
+这里需要在GitHub上添加Jenkins的webhook
+因为我们的jenkins是在本机上部署
+github想要访问本地服务
+就需要做一个内网穿透
+就可以在外部网络环境中访问内网服务
+这里使用我们之前讲过的内网穿透工具natapp
+复制穿透隧道的authtoken
+启动客户端
+然后就映射到这个网址上面
+访问测试一下
+继续配置GitHub webhook
+填写刚才的映射地址加上后缀github-webhook
+这里的触发机制
+就选择默认的推送事件
+
+然后在GitHub上创建一个access token
+Jenkins做一些需要权限的操作
+的时候就用这个access token去鉴权
+权限这里主要设置hook就行
+复制token,马上在jenkins使用
+
+接着进入jenkins设置系统配置Configure System
+添加github server
+添加验证凭据
+把刚才的token复制进去
+然后测试一下
+
+下面开始正式的在jenkins上创建任务
+就是推送代码后触发的任务
+创建任务
+类型选择maven
+在源码管理这里添加项目的地址
+触发的分支
+在触发器这里选择GitHub hook
+然后在后置步骤这里
+设置操作
+先使用maven打包
+clean package
+按照正常的流程,
+我们这里可以设置ssh,
+把包传到服务器上运行
+这里只做演示
+就在本地运行了
+使用shell命令
+这是一个比较简单的shell
+就是到jenkins的项目工作目录下
+启动docker镜像
+因为我项目下有已经写好的dockerfile文件
+直接使用dockerfile启动
+下面来测试一下
+随便修改一下代码
+提交推送到github
+进入jenkins就看到一个构建任务正在执行
+构建成功后
+查看容器已经成功运行起来了
+```
 
 docker-registry参考文档:https://yeasy.gitbook.io/docker_practice/repository/registry <br>
 docker fabric8 maven插件参考文档: https://blog.lonelyman.site/archives/35 <br>
