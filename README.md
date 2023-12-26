@@ -97,6 +97,12 @@ docker run --hostname=b50b06a2b5c3 --user=root --mac-address=02:42:ac:11:00:02 -
 ***上面需要注意的点*** <br>
 1、挂载jenkins目录 --volume=/Users/mac_1/data/docker/jenkins/home:/var/jenkins_home  --volume=/Users/mac_1/data/docker/jenkins/software:/var/software <br>
 2、挂载docker目录(容器内连接宿主机docker server)   --volume=/run/host-services/docker.proxy.sock:/var/run/docker.sock <br>
+##### 2、jenkins容器安装docker客户端
+```
+apt-get update
+apt-get install -y docker.io
+```
+
 
 ##### 2、配置jenkins
 参考文档: https://juejin.cn/post/7127302949797101604#heading-8 <br>
@@ -108,6 +114,5 @@ fabric8官方文档:https://dmp.fabric8.io/ <br>
 docker官方文档:https://docs.docker.com/guides/get-started/ <br>
 dockerFile :https://docs.docker.com/engine/reference/builder/
 
-在Ubuntu下安装Docker :https://cloud.tencent.com/developer/article/2272374?areaSource=102001.17&traceId=mFf1Of3PXZ2grIe5C4mcu
 
 
